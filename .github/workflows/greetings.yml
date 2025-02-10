@@ -13,17 +13,18 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4  # Updated to v4
 
       - name: Cache Maven dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v4  # Updated to v4
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v3  # Updated to v3
         with:
+          distribution: 'temurin'
           java-version: 17
 
       - name: Set up Chrome
@@ -37,8 +38,9 @@ jobs:
 
       - name: Download ChromeDriver
         run: |
-          wget -N https://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
+          LATEST_CHROMEDRIVER=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
+          wget -N https://chromedriver.storage.googleapis.com/$LATEST_CHROMEDRIVER/chromedriver_linux64.zip
+          unzip -o chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
 
